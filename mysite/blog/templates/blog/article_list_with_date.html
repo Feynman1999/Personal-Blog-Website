@@ -1,0 +1,21 @@
+{% extends 'blog/article_list.html' %}
+{% load staticfiles %}   
+
+
+{% block title %} 
+    归档日期: {{article_date.0}}年{{article_date.1}}月
+{% endblock %}
+
+
+{% block nav_blog_active %}
+    active
+{% endblock %}
+
+
+{% block article_type_name %}
+    归档日期：{{article_date.0}}年{{article_date.1}}月
+{% endblock  %}
+    
+
+
+

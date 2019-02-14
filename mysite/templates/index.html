@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    RW's web index
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"> 
+{% endblock  %}
+
+{% block nav_index_active %}
+    active
+{% endblock %}
+
+{% block content %}
+
+<div id="particles-js">
+    <h3 class="home-content">
+            Practice goes deeper than theoretic knowledge
+    </h3>
+</div>
+
+<script src="{% static 'js/particles.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+{% endblock  %}
+

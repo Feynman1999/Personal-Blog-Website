@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}"> 
+{% endblock  %}
+
+{% block nav_about_active %}
+    active
+{% endblock %}
+
+{% block content %}
+
+<h1 style="text-align:center;">敬请期待!</h1>
+
+{% endblock  %}
+

@@ -1,0 +1,21 @@
+{% extends 'blog/article_list.html' %}
+{% load staticfiles %}   
+
+
+{% block title %} 
+    tag: {{article_type.type_name}}
+{% endblock %}
+
+
+{% block nav_blog_active %}
+    active
+{% endblock %}
+
+
+{% block article_type_name %}
+    当前分类：{{article_type.type_name}}
+{% endblock  %}
+    
+
+
+

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}RW's Blog{% endblock %}
+
+{% block nav_blog_active %}active{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'blog/css/article_list.css' %}"> 
+{% endblock  %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-9 col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>{% block article_type_name %}全部博文{% endblock %}</b> &nbsp;(当前页{{page_of_articles.object_list.count}}篇, 共{{page_of_articles.paginator.count}}篇)</h3>
+                </div>
+                <div class="panel-body">
+                    {% for article in page_of_articles.object_list %}
+                        <div class="article">
+                            <h3><a href='{% url 'article_detail' article.pk %}'>{{article.title}} </a></h3> 
+                            <p class="article-info">
+                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                                <a href={% url 'article_list_with_type' article.article_type.pk %}>
+                                    {{article.article_type}}
+                                </a> &nbsp;
+                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                                {{article.created_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;
+                                阅读 ({{article.get_read_num}})
+                            </p>
+                            <p> {{article.content | striptags | truncatechars:200}} </p>  <!-- striptags可以过滤html标签 -->
+                        </div>
+                    {% empty %}
+                        <div class="article">
+                            <h3> --暂无博客 敬请期待-- </h3>
+                        </div>
+                    {% endfor %}  
+                </div>
+            </div>
+            <div aria-label="Page navigation" class="paginator">
+                <p style="margin-bottom:0px;">
+                    当前第{{page_of_articles.number}}页，共{{page_of_articles.paginator.num_pages}}页
+                </p>
+                <ul class="pagination">
+                    {% if page_of_articles.has_previous %}
+                        <li title="上一页">
+                            <a href="?page={{page_of_articles.number | add:-1}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled" title="已经是第一页啦">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+
+                    {% if page_range.0 > 2 %}
+                        <li><a href="?page=1">1</a></li>
+                    {% endif %}
+                    {% if page_range.0 > 1 %}
+                        <li><a>...</a></li>
+                    {% endif %}
+                    
+
+                    {% for page_id in page_range %}  <!-- page_of_articles.paginator.page_range -->
+                        <li {% ifequal page_id page_of_articles.number %} class="active"{% endifequal %}>
+                            <a href="?page={{page_id}}">{{page_id}}</a>
+                        </li>
+                    {% endfor %}
+
+
+                    {% if page_range|last < page_of_articles.paginator.num_pages %}
+                        <li><a>...</a></li>
+                    {% endif %}
+                    {% if page_range|last < page_of_articles.paginator.num_pages|add:-1 %}
+                        <li>
+                            <a href="?page={{page_of_articles.paginator.num_pages}}">{{page_of_articles.paginator.num_pages}}</a>
+                        </li>
+                    {% endif %}
+
+                    
+                    {% if page_of_articles.has_next %}
+                        <li title="下一页">
+                            <a href="?page={{page_of_articles.number|add:1}}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled" title="已经是最后一页啦">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>文章分类</b></h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="article-types">
+                        {% for item in article_types %}
+                            <li><a href={% url 'article_list_with_type' item.pk %}>
+                                {% ifequal item.pk article_type.pk %}
+                                    <b>{{item.type_name}} ({{item.article_count}})</b>
+                                {% else %}
+                                    {{item.type_name}} ({{item.article_count}})
+                                {% endifequal %}
+                            </a></li> 
+                        {% empty %}
+                            <li>暂无分类</li>
+                        {% endfor %}    
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>日期归档</b></h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="article-dates">
+                        {% for item, article_count in article_dates.items %}
+                        <!--   key    value -->
+                            <li><a href={% url 'article_list_with_date' item.year item.month %}>
+                                {% if item.year == article_date.0 and item.month == article_date.1 %} <!-- 注意==前后要有空格 -->
+                                    <b>{{ item|date:"Y年m月" }} ({{article_count}})</b>
+                                {% else %}  
+                                    {{ item|date:"Y年m月" }} ({{article_count}})
+                                {% endif %}
+                            </a></li> 
+                        {% empty %}
+                            <li>暂无博客 敬请期待</li>
+                        {% endfor %}    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock  %}
+

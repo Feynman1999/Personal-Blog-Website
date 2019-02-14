@@ -1,0 +1,28 @@
+ul.article-types{
+    list-style-type: none; 
+    padding-left: 14px;
+}
+
+ul.article-dates{
+    list-style-type: none; 
+    padding-left: 14px;
+}
+
+div.article:not(:last-child){ 
+    /* 最后一个不设置 */
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eee;
+}
+
+div.article h3{
+    margin-top: 0.5em;
+}
+
+div.article p.article-info{
+    margin-bottom: 1em;
+}
+
+div.paginator{
+    text-align: center;
+}

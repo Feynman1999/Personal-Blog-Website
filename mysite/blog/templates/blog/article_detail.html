@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+{% load md2html %}  <!-- 加载自定义过滤器 -->
+
+{% block title %}{{article.title}}{% endblock %}
+
+{% block header_extend %}
+    <link rel="dns-prefetch" href="//cdn.mathjax.org" />
+    <link rel="stylesheet" href="{% static 'blog/css/article_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'md/md1.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/code.css' %}"> 
+    <!-- 可以更换不同样式 -->
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">  <!-- article -->
+      <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1"> <!-- 偏移一个单位 达到居中的效果 -->
+          <h2 align="center">{{article.title}}</h2>
+          <ul class="article-info-description">
+              <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{article.author}}</li>
+              <li><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;
+              <a href={% url 'article_list_with_type' article.article_type.pk %}>
+                  {{article.article_type}}
+              </a></li>
+              <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp; {{article.created_time | date:"Y-m-d H:i:s"}}</li>
+              <li><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp; {{article.last_updated_time | date:"Y-m-d H:i:s"}}</li>
+              <li>阅读 ({{article.get_read_num}})</li>
+          </ul>
+          <!-- 考虑加上最后修改时间 -->
+          <div class="article-content">
+{{article.content | md2html_1 |safe}} 
+          </div>
+          <div class="article-more">
+            <p>
+              上一篇: &nbsp; 
+              {% if previous_article.title %}
+                <a href="{% url 'article_detail' previous_article.pk %}">{{ previous_article.title }}</a>
+              {% else %}
+                当前已经是最新的文章啦^_^
+              {% endif %}
+            </p>
+            <p>
+              下一篇: &nbsp;               
+              {% if next_article.title %}
+                <a href="{% url 'article_detail' next_article.pk %}">{{ next_article.title }}</a>
+              {% else %}
+                当前已经是最后一篇文章啦^_^
+              {% endif %}
+            </p>
+          </div>
+      </div>
+    </div>
+    <div class="row">  <!-- comment -->
+      <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
+        <div class="comment-area">
+          <h3 class="comment-title" id="comment-title">评论</h3>
+              {% if user.is_authenticated %}
+                    <form id="comment_form" action="{% url 'update_comment' %}" method="POST" style="overflow:hidden">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <label>hi! {{user.username}}, 欢迎评论~</label>
+                        <div id="reply-content-container" style="display: none;">
+                            <h4>回复：</h4> 
+                            <div id="reply-content"></div>
+                        </div>
+                        {% for field in comment_form %}
+                          {{field}}
+                          <p class="text-danger">{{field.errors.as_text}}</p>
+                        {% endfor %}
+                      </div>
+                      <p id="comment-message" class="text-danger pull-left"></p>                                                                                                                         
+                      <input type="submit" value="提交" class="btn btn-primary pull-right">
+                    </form> 
+              {% else %}
+                    登录之后就可以评论 / 回复啦(#^.^#) &nbsp;&nbsp;
+                    <a href="{% url 'login' %}?from={{ request.get_full_path }}"> <b>点此登录</b> </a>
+                    &nbsp;&nbsp;
+                    <a href="{% url 'register' %}?from={{ request.get_full_path }}"> <b>点此注册</b> </a>
+              {% endif %}
+        </div>
+        <div class="comment-list">
+          <h3 class="comment-title">评论列表 <!-- ({{comments|length}}) --></h3>
+          <div id="comment-list-for-ajax">
+              {% for item in comments %}
+                    <div style="margin-bottom:3em;" id="comment_id_{{item.pk}}">
+                      <p>
+                          <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;<a href="javascript:jump_and_flash({{item.pk}})">#{{item.pk}}</a>&nbsp;&nbsp;&nbsp;
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{item.user.username}}&nbsp;&nbsp;&nbsp;
+                          <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{item.comment_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+                          <a href="javascript:reply({{item.pk}})"><b>回复</b></a>
+                      </p>    
+                      <div class="article-content" style="border:1px dashed;border-color:rgb(108, 94, 238);padding-left: 2em;padding-right: 2em;">
+                          {{item.text | md2html_1 |safe}} 
+                      </div>
+                      {% for reply in item.root_comment.all %}
+                          <div style="margin-top:1em; padding-left: 3em;" id="comment_id_{{reply.pk}}"> 
+                              <p>
+                                  <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;<a href="javascript:jump_and_flash({{reply.pk}})">#{{reply.pk}}</a>&nbsp;&nbsp;&nbsp;
+                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.user.username}} (<a href="javascript:jump_and_flash({{reply.pk}})">#{{reply.pk}}</a>)
+                                  &nbsp;回复&nbsp;
+                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.reply_to.username}} (<a href="javascript:jump_and_flash({{item.pk}})">#{{item.pk}}</a>)&nbsp;&nbsp;&nbsp;
+                                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{reply.comment_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+                                  <a href="javascript:reply({{reply.pk}})"><b>回复</b></a>  
+                              </p>
+                              <div class="article-content" style="border:1px dashed;border-color:rgb(248, 129, 129);padding-left: 2em;padding-right: 2em;padding-top: 0em;padding-bottom: 0.1em;">
+                                  {{reply.text | md2html_1 |safe}} 
+                              </div>
+                          </div>
+                      {% endfor %}  
+                    </div>
+              {%empty%}
+                  <p id="no-comment">暂无评论！快写一条吧(๑′ᴗ‵๑)</p>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock  %}
+
+
+
+{% block script %}
+<!-- 使用ajax动态刷新 -->
+<script type="text/javascript">
+  $("#comment_form").submit(function(){
+      //清空消息
+      $("#comment-message").html("");
+      
+      //异步提交
+      $.ajax({
+        url: "{% url 'update_comment' %}",
+        type: 'POST',
+        data: $(this).serialize(),
+        cache: false,
+        success: function(data){
+          console.log(data);
+          if(data['status']=="SUCCESS"){
+                // 插入数据
+                if($('#reply_comment_id').val()=='0'){
+                    //插入文章的评论
+                    var comment_html = ["<div style=\"margin-bottom:3em;\" id=\"comment_id_"+ data['pk'] +"\">",
+                                        " <p>",
+                                        "<span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>&nbsp;&nbsp;&nbsp;&nbsp;",
+                                        "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+data['username']+"&nbsp;&nbsp;&nbsp;&nbsp;",
+                                        "<span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;"+data['comment_time']+"&nbsp;&nbsp;&nbsp;&nbsp;",
+                                        "<a href=\"javascript:reply("+ data['pk'] +")\"><b>回复</b></a>",
+                                        "</p>",
+                                        "<div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(108, 94, 238);padding-left: 2em;padding-right: 2em;\">",
+                                        data['text'],
+                                        "</div>",
+                                        "</div>"].join("");
+                    $("#comment-list-for-ajax").prepend(comment_html);
+                }
+                else{
+                    //插入回复
+                    var reply_html = ["<div style=\"margin-top:1em; padding-left: 3em;\" id=\"comment_id_"+ data['pk'] +"\"> ",
+                                      "<p>",
+                                      "<span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>&nbsp;&nbsp;&nbsp;&nbsp;",
+                                      "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+ data['username'] +" (<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>)",
+                                      "&nbsp;&nbsp;回复&nbsp;&nbsp;",
+                                      "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+ data['reply_to_username'] +" (<a href=\"javascript:jump_and_flash("+ data['parent_id'] +")\">#"+ data['parent_id'] +"</a>)&nbsp;&nbsp;&nbsp;&nbsp;",
+                                      "<span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;"+ data['comment_time'] +"&nbsp;&nbsp;&nbsp;&nbsp;",
+                                      "<a href=\"javascript:reply("+ data['pk'] +")\"><b>回复</b></a>",
+                                      "</p>",
+                                      "<div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(248, 129, 129);padding-left: 2em;padding-right: 2em;padding-top: 0em;padding-bottom: 0.1em;\">",
+                                      data['text'],
+                                      "</div>",
+                                      "</div>"].join("");
+                    $("#comment_id_"+String(data['root_pk'])).append(reply_html); //最新的放在最后面
+                }
+                
+                // 清空编辑框的内容
+                $("#forclear").val("");
+                var message = "提交成功！ 点击查看：<span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>"
+                $("#comment-message").html(message);
+                $('#reply-content').html("");
+                $('#reply-content-container').hide();
+                $('#reply_comment_id').val('0');
+                $('#no-comment').remove();
+          }
+          else{
+                // 显示错误信息
+                $("#comment-message").text(data['message']);
+          }
+        },
+        error: function(xhr){
+          console.log(xhr);
+        }
+      });
+      return false;
+  });
+  
+</script>
+
+
+<script type="text/javascript">
+  // 点击回复后触发 跳转至编辑框并闪烁
+  function reply(reply_comment_id){
+    // 标记要回复的id  隐藏的表单项 表单里有隐藏项reply_comment_id
+    $('#reply_comment_id').val(reply_comment_id)
+    // 滑动至编辑框
+    $('html').animate({scrollTop: $('#comment-title').offset().top - 40}, 300);
+
+    //设置相关信息
+    var obj1 = $('#comment_id_'+String(reply_comment_id)).find("p:first"); //标题对象
+    var obj2 = $('#comment_id_'+String(reply_comment_id)).find("div:first"); //内容对象
+    var html = obj1.html();
+    $('#reply-content').html(html);
+    $('#reply-content-container').show();
+
+    //亮一下 强调
+    liang($('#reply-content'), obj2[0].style['borderColor'])
+  }
+  
+  // 点击comment的id后触发 跳转并闪烁
+  function jump_and_flash(click_id){
+        var obj1 = $('#comment_id_'+String(click_id)).find("p:first"); //标题对象
+        var obj2 = $('#comment_id_'+String(click_id)).find("div:first"); //内容对象
+        //跳转
+        $('html').animate({scrollTop: obj1.offset().top - 150}, 300);
+        //亮一下 强调
+        liang(obj2, obj2[0].style['borderColor'])
+  }
+
+  function liang(obj, color){
+      var Flag = false;
+      var time = 0;
+      //闪烁
+      setTimeout(init, 500);
+      function init(){
+          for(var i=0;i<4;i++)
+          {
+              time+=100;
+              setTimeout(function()
+              {
+                  modify_p();                
+              },time);    
+          }
+      }
+      function modify_p(){
+          Flag=!Flag;
+          if(Flag){obj.css("background", color)}
+          else{obj.css("background","white")}
+      }
+  }
+
+</script>
+{% endblock %}
