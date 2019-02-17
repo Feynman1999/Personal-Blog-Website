@@ -2,6 +2,7 @@
 {% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
 {% load md2html %}  <!-- 加载自定义过滤器 -->
 {% load comment_tags %}   <!-- 获取评论数 -->
+{% load likes_tags %}   <!-- 获取点赞数 -->
 
 {% block title %}{{article.title}}{% endblock %}
 
@@ -57,11 +58,11 @@
           </div>
       </div>
       <div class="col-xs-1 col-md-1" style="padding-left:7px;padding-right:7px;">
-          <div class="like" onclick="likeChange(this, 'article', {{article.pk}})">
+          <span class="like {{article | get_like_status:user}}" onclick="likeChange(this, '{{article|get_content_type}}', {{article.pk}})">
             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-            <span class="liked-num">0</span>
+            <span class="liked-num">{{article | get_like_count }}</span>
             <span>喜欢</span>
-          </div>
+          </span>
       </div>
     </div>
     <br><br>
@@ -102,6 +103,10 @@
                           <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;<a href="javascript:jump_and_flash({{item.pk}})">#{{item.pk}}</a>&nbsp;&nbsp;&nbsp;
                           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{item.user.username}}&nbsp;&nbsp;&nbsp;
                           <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{item.comment_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+                          <span class="like {{item | get_like_status:user}}" onclick="likeChange(this, '{{item|get_content_type}}', {{item.pk}})">
+                              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                              <span class="liked-num">{{item | get_like_count }}</span>
+                          </span>&nbsp;&nbsp;&nbsp;
                           <a href="javascript:reply({{item.pk}})"><b>回复</b></a>
                       </p>    
                       <div class="article-content" style="border:1px dashed;border-color:rgb(108, 94, 238);padding-left: 2em;padding-right: 2em;">
@@ -115,6 +120,10 @@
                                   &nbsp;回复&nbsp;
                                   <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.reply_to.username}} (<a href="javascript:jump_and_flash({{item.pk}})">#{{item.pk}}</a>)&nbsp;&nbsp;&nbsp;
                                   <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{reply.comment_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
+                                  <span class="like {{reply | get_like_status:user}}" onclick="likeChange(this, '{{reply|get_content_type}}', {{reply.pk}})">
+                                      <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                      <span class="liked-num">{{reply | get_like_count }}</span>
+                                  </span>&nbsp;&nbsp;&nbsp;
                                   <a href="javascript:reply({{reply.pk}})"><b>回复</b></a>  
                               </p>
                               <div class="article-content" style="border:1px dashed;border-color:rgb(248, 129, 129);padding-left: 2em;padding-right: 2em;padding-top: 0em;padding-bottom: 0.1em;">
@@ -208,7 +217,7 @@
   
   // 使用ajax动态点赞
   function likeChange(obj, content_type, object_id){
-    var is_like = obj.getElementsByClassname('active').length == 0
+    var is_like = obj.classList.contains('active') == false
     $.ajax({
       url: "{% url 'like_change' %}",
       type: 'GET',
@@ -220,9 +229,19 @@
       cache:false,
       success: function(data){
         console.log(data)
+        if(data['status']=='SUCCESS'){
+          //更新点赞状态
+          $(obj).toggleClass("active")  //$()  由dom对象转为jQuery对象
+          //更新点赞数量
+          var liked_num = $(obj.getElementsByClassName('liked-num'));
+          liked_num.text(data['liked_num'])
+        }
+        else{
+
+        }
       },
       error: function(xhr){
-        
+        console.log(xhr)
       }
     });
   }
