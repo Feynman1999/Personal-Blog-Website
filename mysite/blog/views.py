@@ -6,8 +6,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
 from .models import Article, ArticleType
-from comment.models import Comment
-from comment.forms import CommentForm
 from read_count.utils import read_count_once
 # from django.db.models import Count # 用于按类计数
 import time
@@ -70,9 +68,6 @@ def article_list_with_date(request, year, month):
 def article_detail(request, article_id):
 
     article = get_object_or_404(Article, pk = article_id) # 若为md模式 则默认是md源码
-    article_content_type = ContentType.objects.get_for_model(article)
-    comments = Comment.objects.filter(content_type = article_content_type, 
-                                      object_id = article_id, parent=None)
 
     # 更新或创建关联的阅读计数
     read_cookie_key = read_count_once(request, article)
@@ -81,10 +76,6 @@ def article_detail(request, article_id):
     Dict['article'] = article
     Dict['previous_article'] = Article.objects.filter(created_time__gt=article.created_time, is_deleted = False).last()
     Dict['next_article'] = Article.objects.filter(created_time__lt=article.created_time, is_deleted = False).first()
-    Dict['comments'] = comments.order_by('-comment_time')
-    Dict['comment_form'] = CommentForm(initial={'content_type':article_content_type.model, 
-                                                'object_id':article_id,
-                                                'reply_comment_id':0})
     response = render(request, "blog/article_detail.html", Dict)
     response.set_cookie(read_cookie_key, 'true', max_age=100) # cookie 100s后失效 for 阅读计数
     return response

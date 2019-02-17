@@ -4,20 +4,20 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 
 class Comment(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete = models.DO_NOTHING)
+    content_type = models.ForeignKey(ContentType, on_delete = models.CASCADE)
     object_id = models.PositiveIntegerField() # 对应其它表中该对象的主键值(id)
     content_object = GenericForeignKey('content_type', 'object_id') # 类似一种更普适的外键
 
     text = models.TextField()
     comment_time = models.DateTimeField(auto_now_add = True)
-    # 用户对象 发出过的评论
-    user = models.ForeignKey(User, related_name = "comments", on_delete = models.DO_NOTHING)
+    # 用户对象 发出过的评论       级联删除  删除用户时会删除相关联的评论
+    user = models.ForeignKey(User, related_name = "comments", on_delete = models.CASCADE)
 
-    root = models.ForeignKey('self', related_name = "root_comment", null=True, on_delete=models.DO_NOTHING)
+    root = models.ForeignKey('self', related_name = "root_comment", null=True, on_delete=models.CASCADE)
     # parent_id = models.IntegerField(default = 0) # 这样每一个评论是一颗树 根节点的parent_id = 0
-    parent = models.ForeignKey('self', related_name = "parent_comment", null=True, on_delete=models.DO_NOTHING)
+    parent = models.ForeignKey('self', related_name = "parent_comment", null=True, on_delete=models.CASCADE)
     # 用户对象所发出的评论  被哪些评论回复过
-    reply_to = models.ForeignKey(User, related_name = "replies", null=True, on_delete=models.DO_NOTHING)
+    reply_to = models.ForeignKey(User, related_name = "replies", null=True, on_delete=models.CASCADE)
 
 
     def __str__(self):

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
 {% load md2html %}  <!-- 加载自定义过滤器 -->
+{% load comment_tags %}   <!-- 获取评论数 -->
 
 {% block title %}{{article.title}}{% endblock %}
 
@@ -11,25 +12,25 @@
     <link rel="stylesheet" href="{% static 'blog/css/code.css' %}"> 
     <!-- 可以更换不同样式 -->
 {% endblock %}
-
 {% block content %}
   <div class="container">
     <div class="row">  <!-- article -->
       <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1"> <!-- 偏移一个单位 达到居中的效果 -->
           <h2 align="center">{{article.title}}</h2>
           <ul class="article-info-description">
-              <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{article.author}}</li>
-              <li><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;
+              <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{article.author}}</li>
+              <li><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
               <a href={% url 'article_list_with_type' article.article_type.pk %}>
                   {{article.article_type}}
               </a></li>
-              <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp; {{article.created_time | date:"Y-m-d H:i:s"}}</li>
-              <li><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp; {{article.last_updated_time | date:"Y-m-d H:i:s"}}</li>
-              <li>阅读 ({{article.get_read_num}})</li>
+              <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{article.created_time | date:"Y-m-d H:i:s"}}</li>
+              <li><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> {{article.last_updated_time | date:"Y-m-d H:i:s"}}</li>
+              <li>阅读({{article.get_read_num}})</li>
+              <li>评论({{article | get_comment_count}})</li>
           </ul>
           <!-- 考虑加上最后修改时间 -->
           <div class="article-content">
-{{article.content | md2html_1 |safe}} 
+{{article.content | md2html_1 |safe}}
           </div>
           <div class="article-more">
             <p>
@@ -64,7 +65,7 @@
                             <h4>回复：</h4> 
                             <div id="reply-content"></div>
                         </div>
-                        {% for field in comment_form %}
+                        {% for field in article|get_comment_form %}
                           {{field}}
                           <p class="text-danger">{{field.errors.as_text}}</p>
                         {% endfor %}
@@ -80,9 +81,9 @@
               {% endif %}
         </div>
         <div class="comment-list">
-          <h3 class="comment-title">评论列表 <!-- ({{comments|length}}) --></h3>
+          <h3 class="comment-title">评论列表</h3>
           <div id="comment-list-for-ajax">
-              {% for item in comments %}
+              {% for item in article|get_comment_list %}
                     <div style="margin-bottom:3em;" id="comment_id_{{item.pk}}">
                       <p>
                           <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;<a href="javascript:jump_and_flash({{item.pk}})">#{{item.pk}}</a>&nbsp;&nbsp;&nbsp;

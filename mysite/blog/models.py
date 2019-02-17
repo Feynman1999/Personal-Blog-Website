@@ -17,10 +17,10 @@ class Article(models.Model, ReadNum_interface):
     title = models.CharField(max_length = 120)
     # content = RichTextUploadingField()
     content = RichTextUploadingField()
-    article_type = models.ForeignKey(ArticleType, on_delete=models.DO_NOTHING, default = 1) # 默认是pk为1的那个type  , related_name='article_article'
+    article_type = models.ForeignKey(ArticleType, on_delete=models.CASCADE, default = 1) # 默认是pk为1的那个type  , related_name='article_article'
     created_time = models.DateTimeField(auto_now_add=True)    # create_time = models.DateTimeField(default=timezone.now)
     last_updated_time = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete = models.DO_NOTHING, default = 1) # 1是pk
+    author = models.ForeignKey(User, on_delete = models.CASCADE, default = 1) # 1是pk
     is_deleted = models.BooleanField(default = False) # 假删
     
     read_details = GenericRelation(ReadDetail) # 建立关系后 可由article_obj对应到多条readdetail_obj
