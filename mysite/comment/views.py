@@ -6,6 +6,7 @@ from django.utils.timezone import localtime
 from .models import Comment
 from .forms import CommentForm
 from blog.templatetags.md2html import md2html_1
+from likes.templatetags.likes_tags import *
 
 
 def update_comment(request):
@@ -30,7 +31,8 @@ def update_comment(request):
         data['username'] = request.user.username
         data['comment_time'] = localtime(Comment_obj.comment_time).strftime('%Y-%m-%d %H:%M:%S')
         data['text'] = md2html_1(Comment_obj.text)
-        if not parent is None: # 不是直接回复文章的  
+        data['content_type'] = get_content_type(Comment_obj) # ajax增加评论点赞用
+        if not parent is None: # 不是直接回复文章的
             data['reply_to_username'] = Comment_obj.reply_to.username
             data['root_pk'] = Comment_obj.root.pk
             data['parent_id'] = Comment_obj.parent.pk

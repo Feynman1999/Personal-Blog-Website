@@ -32,7 +32,3 @@ CACHES = {
 }
 python manage.py createcachetable
 
-
-待改进：
-** ajax提交评论append时不会加入点赞功能
-** 未登录时点击点赞时提醒登陆

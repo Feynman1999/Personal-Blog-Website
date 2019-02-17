@@ -146,6 +146,15 @@
 {% block script %}
 
 <script type="text/javascript">
+  //造一份format轮子 方便插入html代码
+  String.prototype.format = function(){// '{0}+{1}'.format(a,b) = 'a+b'
+    var str = this;
+    for (var i = 0; i < arguments.length; i++) {
+      var str = str.replace(new RegExp('\\{'+i+'\\}', 'g'), arguments[i])
+    };
+    return str;
+  }
+
   // 使用ajax动态提交评论
   $("#comment_form").submit(function(){
       //清空消息
@@ -163,34 +172,43 @@
                 // 插入数据
                 if($('#reply_comment_id').val()=='0'){
                     //插入文章的评论
-                    var comment_html = ["<div style=\"margin-bottom:3em;\" id=\"comment_id_"+ data['pk'] +"\">",
-                                        " <p>",
-                                        "<span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>&nbsp;&nbsp;&nbsp;&nbsp;",
-                                        "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+data['username']+"&nbsp;&nbsp;&nbsp;&nbsp;",
-                                        "<span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;"+data['comment_time']+"&nbsp;&nbsp;&nbsp;&nbsp;",
-                                        "<a href=\"javascript:reply("+ data['pk'] +")\"><b>回复</b></a>",
-                                        "</p>",
-                                        "<div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(108, 94, 238);padding-left: 2em;padding-right: 2em;\">",
-                                        data['text'],
-                                        "</div>",
-                                        "</div>"].join("");
+                    var comment_html = ["                    <div style=\"margin-bottom:3em;\" id=\"comment_id_{0}\">",
+                                        "                      <p>",
+                                        "                          <span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash({0})\">#{0}</a>&nbsp;&nbsp;&nbsp;",
+                                        "                          <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{1}&nbsp;&nbsp;&nbsp;",
+                                        "                          <span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;{2}&nbsp;&nbsp;&nbsp;",
+                                        "                          <span class=\"like\" onclick=\"likeChange(this, \'{4}\', {0})\">",
+                                        "                              <span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span>",
+                                        "                              <span class=\"liked-num\">0</span>",
+                                        "                          </span>&nbsp;&nbsp;&nbsp;",
+                                        "                          <a href=\"javascript:reply({0})\"><b>回复</b></a>",
+                                        "                      </p>    ",
+                                        "                      <div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(108, 94, 238);padding-left: 2em;padding-right: 2em;\">",
+                                        "                          {3} ",
+                                        "                      </div>"].join("");
+                    comment_html = comment_html.format(data['pk'], data['username'], data['comment_time'], data['text'], data['content_type']);
                     $("#comment-list-for-ajax").prepend(comment_html);
                 }
                 else{
                     //插入回复
-                    var reply_html = ["<div style=\"margin-top:1em; padding-left: 3em;\" id=\"comment_id_"+ data['pk'] +"\"> ",
-                                      "<p>",
-                                      "<span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>&nbsp;&nbsp;&nbsp;&nbsp;",
-                                      "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+ data['username'] +" (<a href=\"javascript:jump_and_flash("+ data['pk'] +")\">#"+ data['pk'] +"</a>)",
-                                      "&nbsp;&nbsp;回复&nbsp;&nbsp;",
-                                      "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;"+ data['reply_to_username'] +" (<a href=\"javascript:jump_and_flash("+ data['parent_id'] +")\">#"+ data['parent_id'] +"</a>)&nbsp;&nbsp;&nbsp;&nbsp;",
-                                      "<span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;"+ data['comment_time'] +"&nbsp;&nbsp;&nbsp;&nbsp;",
-                                      "<a href=\"javascript:reply("+ data['pk'] +")\"><b>回复</b></a>",
-                                      "</p>",
-                                      "<div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(248, 129, 129);padding-left: 2em;padding-right: 2em;padding-top: 0em;padding-bottom: 0.1em;\">",
-                                      data['text'],
-                                      "</div>",
-                                      "</div>"].join("");
+                    var reply_html = ["                          <div style=\"margin-top:1em; padding-left: 3em;\" id=\"comment_id_{0}\"> ",
+                                      "                              <p>",
+                                      "                                  <span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash({0})\">#{0}</a>&nbsp;&nbsp;&nbsp;",
+                                      "                                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{2} (<a href=\"javascript:jump_and_flash({0})\">#{0}</a>)",
+                                      "                                  &nbsp;回复&nbsp;",
+                                      "                                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{3} (<a href=\"javascript:jump_and_flash({1})\">#{1}</a>)&nbsp;&nbsp;&nbsp;",
+                                      "                                  <span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;{4}&nbsp;&nbsp;&nbsp;",
+                                      "                                  <span class=\"like\" onclick=\"likeChange(this, \'{6}\', {0})\">",
+                                      "                                      <span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span>",
+                                      "                                      <span class=\"liked-num\">0</span>",
+                                      "                                  </span>&nbsp;&nbsp;&nbsp;",
+                                      "                                  <a href=\"javascript:reply({0})\"><b>回复</b></a>  ",
+                                      "                              </p>",
+                                      "                              <div class=\"article-content\" style=\"border:1px dashed;border-color:rgb(248, 129, 129);padding-left: 2em;padding-right: 2em;padding-top: 0em;padding-bottom: 0.1em;\">",
+                                      "                                  {5} ",
+                                      "                              </div>",
+                                      "                          </div>"].join("");
+                    reply_html = reply_html.format(data['pk'], data['parent_id'], data['username'], data['reply_to_username'], data['comment_time'], data['text'], data['content_type']);
                     $("#comment_id_"+String(data['root_pk'])).append(reply_html); //最新的放在最后面
                 }
                 
