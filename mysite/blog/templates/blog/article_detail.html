@@ -32,26 +32,39 @@
           <div class="article-content">
 {{article.content | md2html_1 |safe}}
           </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">  <!-- article more -->
+      <div class="col-xs-11 col-xs-offset-0 col-md-9 col-md-offset-1">
           <div class="article-more">
-            <p>
-              上一篇: &nbsp; 
-              {% if previous_article.title %}
-                <a href="{% url 'article_detail' previous_article.pk %}">{{ previous_article.title }}</a>
-              {% else %}
-                当前已经是最新的文章啦^_^
-              {% endif %}
-            </p>
-            <p>
-              下一篇: &nbsp;               
-              {% if next_article.title %}
-                <a href="{% url 'article_detail' next_article.pk %}">{{ next_article.title }}</a>
-              {% else %}
-                当前已经是最后一篇文章啦^_^
-              {% endif %}
-            </p>
+              <p>
+                上一篇: &nbsp; 
+                {% if previous_article.title %}
+                  <a href="{% url 'article_detail' previous_article.pk %}">{{ previous_article.title }}</a>
+                {% else %}
+                  当前已经是最新的文章啦^_^
+                {% endif %}
+              </p>
+              <p>
+                下一篇: &nbsp;               
+                {% if next_article.title %}
+                  <a href="{% url 'article_detail' next_article.pk %}">{{ next_article.title }}</a>
+                {% else %}
+                  当前已经是最后一篇文章啦^_^
+                {% endif %}
+              </p>
+          </div>
+      </div>
+      <div class="col-xs-1 col-md-1" style="padding-left:7px;padding-right:7px;">
+          <div class="like" onclick="likeChange(this, 'article', {{article.pk}})">
+            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+            <span class="liked-num">0</span>
+            <span>喜欢</span>
           </div>
       </div>
     </div>
+    <br><br>
     <div class="row">  <!-- comment -->
       <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
         <div class="comment-area">
@@ -121,10 +134,10 @@
 {% endblock  %}
 
 
-
 {% block script %}
-<!-- 使用ajax动态刷新 -->
+
 <script type="text/javascript">
+  // 使用ajax动态提交评论
   $("#comment_form").submit(function(){
       //清空消息
       $("#comment-message").html("");
@@ -193,6 +206,26 @@
       return false;
   });
   
+  // 使用ajax动态点赞
+  function likeChange(obj, content_type, object_id){
+    var is_like = obj.getElementsByClassname('active').length == 0
+    $.ajax({
+      url: "{% url 'like_change' %}",
+      type: 'GET',
+      data:{
+        content_type: content_type,
+        object_id: object_id,
+        is_like: is_like
+      },
+      cache:false,
+      success: function(data){
+        console.log(data)
+      },
+      error: function(xhr){
+        
+      }
+    });
+  }
 </script>
 
 
