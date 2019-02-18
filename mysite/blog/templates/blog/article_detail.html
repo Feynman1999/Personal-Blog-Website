@@ -116,9 +116,9 @@
                           <div style="margin-top:1em; padding-left: 3em;" id="comment_id_{{reply.pk}}"> 
                               <p>
                                   <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;<a href="javascript:jump_and_flash({{reply.pk}})">#{{reply.pk}}</a>&nbsp;&nbsp;&nbsp;
-                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.user.username}} (<a href="javascript:jump_and_flash({{reply.pk}})">#{{reply.pk}}</a>)
+                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.user.username}}
                                   &nbsp;回复&nbsp;
-                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.reply_to.username}} (<a href="javascript:jump_and_flash({{reply.reply_to.pk}})">#{{reply.reply_to.pk}}</a>)&nbsp;&nbsp;&nbsp;
+                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{reply.reply_to.username}} (<a href="javascript:jump_and_flash({{reply.parent.pk}})">#{{reply.parent.pk}}</a>)&nbsp;&nbsp;&nbsp;
                                   <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{reply.comment_time | date:"Y-m-d H:i:s"}}&nbsp;&nbsp;&nbsp;
                                   <span class="like {{reply | get_like_status:user}}" onclick="likeChange(this, '{{reply|get_content_type}}', {{reply.pk}})">
                                       <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
@@ -194,7 +194,7 @@
                     var reply_html = ["                          <div style=\"margin-top:1em; padding-left: 3em;\" id=\"comment_id_{0}\"> ",
                                       "                              <p>",
                                       "                                  <span class=\"glyphicon glyphicon-link\" aria-hidden=\"true\"></span>&nbsp;<a href=\"javascript:jump_and_flash({0})\">#{0}</a>&nbsp;&nbsp;&nbsp;",
-                                      "                                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{2} (<a href=\"javascript:jump_and_flash({0})\">#{0}</a>)",
+                                      "                                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{2}",
                                       "                                  &nbsp;回复&nbsp;",
                                       "                                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span>&nbsp;{3} (<a href=\"javascript:jump_and_flash({1})\">#{1}</a>)&nbsp;&nbsp;&nbsp;",
                                       "                                  <span class=\"glyphicon glyphicon-time\" aria-hidden=\"true\"></span>&nbsp;{4}&nbsp;&nbsp;&nbsp;",

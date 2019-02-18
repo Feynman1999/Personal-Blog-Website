@@ -30,5 +30,5 @@ CACHES = {
         'LOCATION': 'my_cache_table',
     }
 }
-python manage.py createcachetable 
+python manage.py createcachetable
 
