@@ -6,8 +6,12 @@
 {% endblock %}
 
 {% block header_extend %}
-    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'user/css/register.css' %}">
 {% endblock  %}
+
+{% block nav_register_active %}
+    active
+{% endblock %}
 
 
 {% block content %}
@@ -15,6 +19,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4">
+            {% if not user.is_authenticated %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"><b>注册</b></h3>
@@ -33,6 +38,14 @@
                             </form>
                     </div>
                 </div>
+            {% else %}
+                <h2 style="text-align:center;">您已登录，即将跳转至首页...</h2>
+                <script type="text/javascript">
+                    var timeout = setTimeout(function () {
+                        window.location.href = '/';
+                    },1000)
+                </script>
+            {% endif %}
         </div>
     </div>
 </div>

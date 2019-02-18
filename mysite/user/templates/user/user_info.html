@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    个人资料
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'user/css/user_info.css' %}"> 
+{% endblock  %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            {% if user.is_authenticated %}
+                <h2>{{user.username}}</h2>
+                <ul>
+                    <li>昵称：<a href="#">点击修改昵称</a></li>
+                    <li>邮箱：{% if user.email %}{{user.email}}{% else %}未绑定 <a href="#">点击绑定</a>{% endif %}</li>
+                    <li>上一次登录时间：{{user.last_login | date:"Y-m-d H:i:s"}}</li>
+                    <li><a href="#">点击修改密码</a></li>
+                </ul>
+            {% else %}
+                <h2 style="text-align:center;">未登录，即将跳转至首页...</h2>
+                <script type="text/javascript">
+                    var timeout = setTimeout(function () {
+                        window.location.href = '/';
+                    },1000)
+                </script>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock  %}
+

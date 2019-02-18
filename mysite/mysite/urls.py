@@ -26,10 +26,8 @@ urlpatterns = [
     path('statistics/', statistics, name='statistics'),
     path('about/', about, name='about'),
     path('admin/', admin.site.urls),
-    path('login/', login, name='login'),
-    path('login_for_modal/', login_for_modal, name='login_for_modal'),
-    path('register/', register, name='register'),
 
+    path('user/', include('user.urls')),
     path('blog/', include('blog.urls')),
     path('comment/', include('comment.urls')),
     path('likes/', include('likes.urls')),

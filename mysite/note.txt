@@ -1,14 +1,28 @@
 
-
-容易自动化发布
+自动化发布工具
 
 
 搜索功能
 
 
-登陆时错误信息定时显示 如1s 这样才能看出不同
+登陆后下拉栏动态划出
+
+注册/登录成功通知
 
 
+感谢：
+
+Python https://www.python.org/
+Django https://www.djangoproject.com/
+HTML5
+CSS
+JavaScript
+jQuery http://jquery.com/
+Bootstrap https://getbootstrap.com/
+Glyphicons http://glyphicons.com/
+SQLite https://www.sqlite.org
+Ubuntu https://www.ubuntu.com/
+aliyun https://www.aliyun.com/
 
 
 

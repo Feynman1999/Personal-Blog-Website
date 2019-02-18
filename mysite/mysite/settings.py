@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'read_count',
     'comment',
     'likes',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -67,9 +68,10 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request', # 预加键值
+                'django.template.context_processors.request', 
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'user.context_processors.login_modal_form', # 预加键值
             ],
         },
     },

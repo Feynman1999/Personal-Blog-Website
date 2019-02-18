@@ -7,7 +7,6 @@ from django.conf import settings
 
 from .models import Article, ArticleType
 from read_count.utils import read_count_once
-from mysite.forms import LoginForm
 # from django.db.models import Count # 用于按类计数
 import time
 
@@ -77,7 +76,7 @@ def article_detail(request, article_id):
     Dict['article'] = article
     Dict['previous_article'] = Article.objects.filter(created_time__gt=article.created_time, is_deleted = False).last()
     Dict['next_article'] = Article.objects.filter(created_time__lt=article.created_time, is_deleted = False).first()
-    Dict['login_form'] = LoginForm()
+    # Dict['login_form'] = LoginForm() 已成为公共dict
     response = render(request, "blog/article_detail.html", Dict)
     response.set_cookie(read_cookie_key, 'true', max_age=100) # cookie 100s后失效 for 阅读计数
     return response

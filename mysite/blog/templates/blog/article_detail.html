@@ -3,6 +3,7 @@
 {% load md2html %}  <!-- 加载自定义过滤器 -->
 {% load comment_tags %}   <!-- 获取评论数 -->
 {% load likes_tags %}   <!-- 获取点赞数 -->
+{% load deal_from_url %}   <!-- 处理跨多页返回from_url时的累加问题 -->
 
 {% block title %}{{article.title}}{% endblock %}
 
@@ -90,9 +91,9 @@
                     </form> 
               {% else %}
                     登录之后就可以评论 / 回复啦(#^.^#) &nbsp;&nbsp;
-                    <a href="{% url 'login' %}?from={{ request.get_full_path }}"> <b>点此登录</b> </a>
+                    <a href="{% url 'login' %}?from={{ request.get_full_path | deal_from_url_fun1}}"> <b>点此登录</b> </a>
                     &nbsp;&nbsp;
-                    <a href="{% url 'register' %}?from={{ request.get_full_path }}"> <b>点此注册</b> </a>
+                    <a href="{% url 'register' %}?from={{ request.get_full_path | deal_from_url_fun1}}"> <b>点此注册</b> </a>
               {% endif %}
         </div>
         <div class="comment-list">
@@ -138,36 +139,6 @@
               {% endfor %}
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="login_modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-          <form id="login_modal_form" action="" method="POST"> <!-- 使用ajax异步请求 -->
-              {% csrf_token %}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><b>登录 (<a href="{% url 'register' %}?from={{ request.get_full_path}}"> 还没账号?点此注册</a>)</b></h4>
-              </div>
-
-              <div class="modal-body">
-                      {% for field in login_form %}
-                          <label for="{{field.id_for_label}}">{{field.label}}</label>
-                          {{field}}
-                          <!-- <p class="text-danger">{{field.errors.as_text}}</p> -->
-                          <br>
-                      {% endfor %}
-                      <span id="login_medal_tip" class="text-danger"></span>
-              </div>
-
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">登录</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-              </div>
-          </form>
       </div>
     </div>
   </div>
@@ -301,25 +272,6 @@
     });
   }
 
-  // 使用ajax登陆
-  $("#login_modal_form").submit(function(event){
-    event.preventDefault(); //防止密码错误后modal消失
-    $.ajax({
-      url: '{% url "login_for_modal" %}',
-      type: 'POST',
-      data: $(this).serialize(),
-      cache: false,
-      success: function(data){
-          if(data['status']=='SUCCESS'){
-            window.location.reload(); //刷新
-          }
-          else{
-            $('#login_medal_tip').text('用户名或密码不正确！')
-          }
-      }
-    });
-  });
-  
 </script>
 
 

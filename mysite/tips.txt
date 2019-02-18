@@ -27,6 +27,11 @@ CACHES = {
 
 
 新机步骤：
+删除migrations中的迁移文件
+删除数据库  (Q: 好的数据迁移办法?)
+python manage.py makemigrations
+python manage.py migrate
+
 创建超管
 创建两类用于调试
 python manage.py createcachetable
