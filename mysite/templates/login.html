@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+{% load deal_from_url %}   <!-- 处理跨多页返回from_url时的累加问题 -->
 
 {% block title %}
     登录
@@ -17,8 +18,7 @@
         <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>登录<a class="pull-right" href="{% url 'register' %}"> 还没账号?点此注册</a></b></h3>
-
+                        <h3 class="panel-title"><b>登录<a class="pull-right" href="{% url 'register' %}?from={{ request.get_full_path | deal_from_url_fun1 }}"> 还没账号?点此注册</a></b></h3>
                     </div>
                     <div class="panel-body">
                             <form action="" method="POST"> 

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.http import JsonResponse
 
 from blog.models import Article
 from read_count.utils import *
@@ -37,6 +38,7 @@ def about(request):
     return render(request, 'about.html')
 
 
+# 页面登陆
 def login(request):
     if request.method == 'POST' :
         login_form = LoginForm(request.POST)
@@ -50,6 +52,22 @@ def login(request):
     Dict = {}
     Dict['login_form'] = login_form
     return render(request, 'login.html', Dict)
+
+
+# modal登陆 (using ajax)
+def login_for_modal(request):
+    if request.method == 'POST' :
+        login_form = LoginForm(request.POST)
+        data = {}
+        if login_form.is_valid():
+            user = login_form.cleaned_data['user']
+            auth.login(request, user)
+            data['status'] = 'SUCCESS'
+        else:
+            data['status'] = 'ERROR'
+        return JsonResponse(data)
+    else:
+        pass
 
 
 def register(request):

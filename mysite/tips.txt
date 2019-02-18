@@ -1,0 +1,32 @@
+admin_user:
+    yuxiang
+    bbezcyx
+
+
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+
+chorme的插件可能会导致js错误  比如vedio download
+
+
+sqlite不能区分字符大小写！！ 比如用filter的contain方法 等类似字符串方法
+
+
+pythoneverywhere  :
+收集静态文件夹  python manage.py collectstatic
+
+
+#缓存设置
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
+
+新机步骤：
+创建超管
+创建两类用于调试
+python manage.py createcachetable

@@ -1,34 +1,15 @@
-admin_user:
-    yuxiang
-    bbezcyx
-
-
-pip freeze > requirements.txt
-pip install -r requirements.txt
-
-
-
-搜索功能
 
 
 容易自动化发布
 
 
-sqlite不能区分字符大小写！！ 比如用filter的contain方法 等类似字符串方法
+搜索功能
+
+
+登陆时错误信息定时显示 如1s 这样才能看出不同
 
 
 
-pythoneverywhere  :
-
-收集静态文件夹  python manage.py collectstatic
 
 
-#缓存设置
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'my_cache_table',
-    }
-}
-python manage.py createcachetable
 

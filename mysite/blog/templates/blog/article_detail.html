@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static 'blog/css/code.css' %}"> 
     <!-- 可以更换不同样式 -->
 {% endblock %}
+
 {% block content %}
   <div class="container">
     <div class="row">  <!-- article -->
@@ -140,13 +141,44 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="login_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+          <form id="login_modal_form" action="" method="POST"> <!-- 使用ajax异步请求 -->
+              {% csrf_token %}
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><b>登录 (<a href="{% url 'register' %}?from={{ request.get_full_path}}"> 还没账号?点此注册</a>)</b></h4>
+              </div>
+
+              <div class="modal-body">
+                      {% for field in login_form %}
+                          <label for="{{field.id_for_label}}">{{field.label}}</label>
+                          {{field}}
+                          <!-- <p class="text-danger">{{field.errors.as_text}}</p> -->
+                          <br>
+                      {% endfor %}
+                      <span id="login_medal_tip" class="text-danger"></span>
+              </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">登录</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
 {% endblock  %}
+
 
 
 {% block script %}
 
 <script type="text/javascript">
-  //造一份format轮子 方便插入html代码
+  // 造一份format轮子 方便插入html代码
   String.prototype.format = function(){// '{0}+{1}'.format(a,b) = 'a+b'
     var str = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -157,10 +189,10 @@
 
   // 使用ajax动态提交评论
   $("#comment_form").submit(function(){
-      //清空消息
+      // 清空消息
       $("#comment-message").html("");
       
-      //异步提交
+      // 异步提交
       $.ajax({
         url: "{% url 'update_comment' %}",
         type: 'POST',
@@ -255,7 +287,12 @@
           liked_num.text(data['liked_num'])
         }
         else{
+          if(data['code']==400){
+            $('#login_modal').modal('show')
+          }
+          else{
 
+          }
         }
       },
       error: function(xhr){
@@ -263,6 +300,26 @@
       }
     });
   }
+
+  // 使用ajax登陆
+  $("#login_modal_form").submit(function(event){
+    event.preventDefault(); //防止密码错误后modal消失
+    $.ajax({
+      url: '{% url "login_for_modal" %}',
+      type: 'POST',
+      data: $(this).serialize(),
+      cache: false,
+      success: function(data){
+          if(data['status']=='SUCCESS'){
+            window.location.reload(); //刷新
+          }
+          else{
+            $('#login_medal_tip').text('用户名或密码不正确！')
+          }
+      }
+    });
+  });
+  
 </script>
 
 
@@ -280,9 +337,12 @@
     var html = obj1.html();
     $('#reply-content').html(html);
     $('#reply-content-container').show();
-
+    
     //亮一下 强调
     liang($('#reply-content'), obj2[0].style['borderColor'])
+    
+    //focus
+    $('#forclear').focus()
   }
   
   // 点击comment的id后触发 跳转并闪烁
@@ -295,6 +355,7 @@
         liang(obj2, obj2[0].style['borderColor'])
   }
 
+  // 闪烁 obj对象
   function liang(obj, color){
       var Flag = false;
       var time = 0;
