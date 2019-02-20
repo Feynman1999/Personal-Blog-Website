@@ -146,7 +146,7 @@ CKEDITOR_UPLOAD_PATH = 'upload/'
 NUM_IN_ONE_PAGE = 7
 PAGE_GAP = 3  #以当前页为中心 前后显示的页的数量
 
-#缓存设置
+# 缓存设置
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
@@ -154,3 +154,11 @@ CACHES = {
     }
 }
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '763972750@qq.com'
+EMAIL_HOST_PASSWORD = 'lgpphcklrmnnbgba'
+EMAIL_SUBJECT_PREFIX = '[RandomWalker\'s Blog]♪(･ω･)ﾉ'
+EMAIL_USE_TLS = True # 与SMTP服务器通信时， 是否启动TLS链接（安全链接）  
