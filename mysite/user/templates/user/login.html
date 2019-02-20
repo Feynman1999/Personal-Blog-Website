@@ -35,6 +35,8 @@
                                         <br>
                                     {% endfor %}
                                     <span class="pull-left text-danger">{{login_form.non_field_errors}}</span>
+                                    <div class="clearfix"></div>
+                                    <a class="pull-left text-danger" href="{% url 'forgot_password' %}">忘记密码?点此重置</a>
                                     <input type="submit" value="登录" class="btn btn-primary pull-right">
                                 </form>
                         </div>

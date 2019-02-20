@@ -45,7 +45,7 @@ def login_for_modal(request):
 
 def register(request):
     if request.method == 'POST' :
-        reg_form = RegForm(request.POST)
+        reg_form = RegForm(request.POST, request=request)
         if reg_form.is_valid():
             username = reg_form.cleaned_data['username']
             email = reg_form.cleaned_data['email']
@@ -53,10 +53,14 @@ def register(request):
             # 创建用户
             user = User.objects.create_user(username, email, password)
             user.save()   # user = User()       user.username = username   user.email = email  user.set_password(password) 
+            # 清楚session
+            del request.session['register_code']
             # 登录用户
             user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
             return redirect(request.GET.get('from', reverse('index')))
+        else:
+            pass
     else:
         reg_form = RegForm()
 
@@ -97,6 +101,30 @@ def change_nickname(request):
     return render(request, 'user/form_for_change.html', Dict)
 
 
+def change_password(request):
+    redirect_to = reverse('index')
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, user=request.user)
+        if form.is_valid():
+            user = request.user
+            # old_password = form.cleaned_data['old_password']
+            new_password = form.cleaned_data['new_password']
+            user.set_password(new_password)
+            user.save()
+            auth.logout(request)
+            return redirect(redirect_to)
+    else:
+        form = ChangePasswordForm()
+    
+    Dict = {}
+    Dict['form'] = form
+    Dict['page_title'] = '修改密码'
+    Dict['form_title'] = '修改密码'
+    Dict['submit_text'] = '修改'
+    Dict['return_back_url'] = redirect_to
+    return render(request, 'user/form_for_change.html', Dict)
+
+
 def bind_email(request):
     redirect_to = request.GET.get('from', reverse('index'))
     if request.method == 'POST':
@@ -105,6 +133,8 @@ def bind_email(request):
             email = form.cleaned_data['email']
             request.user.email = email
             request.user.save()
+            # 清楚session
+            del request.session['bind_email_code']
             return redirect(redirect_to)
         else:
             pass
@@ -126,6 +156,7 @@ def make_verification_code():
 
 def send_verification_code(request):
     email = request.GET.get('email', '')
+    send_for = request.GET.get('send_for', '')
     data = {}
     if email != "":
         code = make_verification_code()
@@ -134,7 +165,7 @@ def send_verification_code(request):
         if now - send_code_time < 60:
             data['status'] = 'error! 发送太频繁，需间隔1分钟发送！'
         else:   
-            request.session['bind_email_code'] = code
+            request.session[send_for] = code
             request.session['send_code_time'] = int(time.time())
             # 发送邮件
             send_mail(
@@ -149,3 +180,30 @@ def send_verification_code(request):
         data['status'] = 'error! 邮件地址不能为空!'
 
     return JsonResponse(data)
+
+
+def forgot_password(request):
+    redirect_to = reverse('login')
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST, request=request)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            new_password = form.cleaned_data['new_password']
+            user = User.objects.get(email=email)
+            user.set_password(new_password)
+            user.save()
+            # 清楚session
+            del request.session['forgot_password_code']
+            return redirect(redirect_to)
+        else:
+            pass
+    else:
+        form = ForgotPasswordForm()
+    
+    Dict = {}
+    Dict['form'] = form
+    Dict['page_title'] = '重置密码'
+    Dict['form_title'] = '重置密码( 注意：当前页面刷新后需要重新发送验证码)'
+    Dict['submit_text'] = '重置'
+    Dict['return_back_url'] = redirect_to
+    return render(request, 'user/forgot_password.html', Dict)

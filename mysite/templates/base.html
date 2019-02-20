@@ -66,6 +66,7 @@
                     </b> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                       <li><a href="{% url 'user_info' %}"><b>个人资料</b></a></li>
+                      <li><a href="{% url 'change_password' %}"><b>修改密码</b></a></li>
                       {% if user.is_staff %}<li><a href="{% url 'admin:index' %}"><b>后台管理</b></a></li></li>{% endif %}
                       <li role="separator" class="divider"></li>
                       <li><a href="{% url 'logout' %}?from={{ request.get_full_path | deal_from_url_fun1 }}"><b>退出</b></a></li>
