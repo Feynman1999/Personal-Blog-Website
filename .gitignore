@@ -6,3 +6,7 @@ mysite/*/migrations/
 *.pyc
 
 *.sqlite3
+
+mysite/static/admin/
+
+mysite/static/ckeditor/

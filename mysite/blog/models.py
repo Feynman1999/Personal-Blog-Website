@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 # from ckeditor.fields import RichTextField
@@ -27,6 +28,12 @@ class Article(models.Model, ReadNum_interface):
 
     def __str__(self):  
         return "Article: {}".format(self.title) 
+
+    def get_url(self):
+        return reverse('article_detail', kwargs={'article_id' : self.pk})
+
+    def get_email(self):
+        return self.author.email
 
     class Meta:
         ordering = ['-created_time']  # 按照时间倒叙排列

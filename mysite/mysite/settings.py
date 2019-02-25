@@ -25,7 +25,7 @@ SECRET_KEY = '=jm@$k1ah&c0knqzb&c2nr)g26+r2w+fxhf8d^#cx^$ud((2p)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,11 +82,23 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mysite_db',
+        'USER': 'yuxiang',
+        'PASSWORD': 'bbezcyx',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -129,7 +141,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 收集各处的static
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 收集各处的static
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'), 
 ]
@@ -146,7 +158,7 @@ CKEDITOR_UPLOAD_PATH = 'upload/'
 NUM_IN_ONE_PAGE = 7
 PAGE_GAP = 3  #以当前页为中心 前后显示的页的数量
 
-#缓存设置
+# 缓存设置
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
@@ -154,3 +166,12 @@ CACHES = {
     }
 }
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '763972750@qq.com'
+EMAIL_HOST_PASSWORD = 'lgpphcklrmnnbgba'
+EMAIL_SUBJECT_PREFIX = '[RandomWalker\'s Blog]♪(･ω･)ﾉ'
+EMAIL_USE_SSL = True # 与SMTP服务器通信时， 是否启动TLS链接（安全链接） 
+EMAIL_COMMENT_SEND = True 

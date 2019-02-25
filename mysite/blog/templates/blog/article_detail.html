@@ -280,8 +280,11 @@
   function reply(reply_comment_id){
     // 标记要回复的id  隐藏的表单项 表单里有隐藏项reply_comment_id
     $('#reply_comment_id').val(reply_comment_id)
+    // 清空消息
+    $("#comment-message").text("")
     // 滑动至编辑框
     $('html').animate({scrollTop: $('#comment-title').offset().top - 40}, 300);
+
 
     //设置相关信息
     var obj1 = $('#comment_id_'+String(reply_comment_id)).find("p:first"); //标题对象

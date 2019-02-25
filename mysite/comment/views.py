@@ -3,10 +3,13 @@ from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.utils.timezone import localtime
+from django.conf import settings
+
 from .models import Comment
 from .forms import CommentForm
 from blog.templatetags.md2html import md2html_1
 from likes.templatetags.likes_tags import *
+
 
 
 def update_comment(request):
@@ -26,6 +29,10 @@ def update_comment(request):
             Comment_obj.reply_to = parent.user
         Comment_obj.save()
         # return redirect(referer)
+
+        # 邮件通知
+        if settings.EMAIL_COMMENT_SEND:
+            Comment_obj.send_email()
 
         data['status'] = 'SUCCESS'
         data['username'] = request.user.username

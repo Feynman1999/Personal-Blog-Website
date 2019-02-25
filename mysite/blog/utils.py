@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from .models import Article, ArticleType
+import time
 
 # for test
 def test_add_article(l, r): 
@@ -9,4 +12,4 @@ def test_add_article(l, r):
         article.article_type = ArticleType.objects.all()[i%2]
         article.author = super_user
         article.save()
-        time.sleep(0.001)
+        time.sleep(0.0001)
