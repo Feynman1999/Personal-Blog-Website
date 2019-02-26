@@ -71,3 +71,5 @@ ps -aux | grep uwsgi
 ps -aux | grep uwsgi |awk '{print $2}'|xargs kill -9
 
 
+# 注意 manage.py中默认指向的是develop  如果在server上运行manage 注意改为prod
+
