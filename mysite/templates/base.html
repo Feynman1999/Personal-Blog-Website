@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title> {% block title %}{% endblock %}</title>
-  <!-- <link rel="icon" type="image/x-icon" href="./favicon.ico"/> -->
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
   <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}"> <!-- 注意 若使用这种方法 则必须在settings.py中设置static路径 -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}">  
   {% block header_extend %}{% endblock %}
