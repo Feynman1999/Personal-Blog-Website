@@ -135,7 +135,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 收集各处的static
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected') # 收集各处的static
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'), 
 ]
