@@ -16,6 +16,7 @@ sqlite不能区分字符大小写！！ 比如用filter的contain方法 等类�
 pythoneverywhere  :
 收集静态文件夹  python manage.py collectstatic
 
+注意，在服务器端 收集静态文件和上面不同
 
 #缓存设置
 CACHES = {
@@ -46,3 +47,27 @@ utils.get_random_secret_key()
 vim /etc/profile
 source /etc/profile
 echo $EMAIL_HOST_PASSWORD
+
+
+Make uWSGI startup when the system boots
+The last step is to make it all happen automatically at system startup time.
+
+For many systems, the easiest (if not the best) way to do this is to use the rc.local file.
+
+Edit /etc/rc.local and add:
+
+/usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
+
+
+# 重启nginx
+
+sudo /etc/init.d/nginx restart
+
+
+# uwsgi 查看进程
+ps -aux | grep uwsgi
+
+# uwsgi 全部关闭
+ps -aux | grep uwsgi |awk '{print $2}'|xargs kill -9
+
+
