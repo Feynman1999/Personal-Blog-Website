@@ -10,3 +10,7 @@ mysite/*/migrations/
 mysite/static/admin/
 
 mysite/static/ckeditor/
+
+articles\.zip
+
+articles/

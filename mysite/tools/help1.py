@@ -36,12 +36,6 @@ def get_article_id_and_title_and_content(path):
 
     return Id_2, title, content
 
-ans = listdir_only_file("/home/articles/")
-# print(ans)
 
-# for item in ans:
-#    time.sleep(0.1)
-#    Id, title, content = get_article_id_and_title_and_content(item)
-#    print(Id)
-#    print(title)
-#    print(content)
+# ans = listdir_only_file("/home/articles/")
+# ans.sort(key=lambda x: int(get_article_id_and_title_and_content(x)[0]))
