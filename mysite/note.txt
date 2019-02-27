@@ -1,3 +1,13 @@
+SECRET_KEY
+5k(eqf*6!ngq)i0rwk1lu*9-yfsm-(w6u$z6=e39*7cx2m^drj
+
+DATABASE_PASSWORD
+bbezcyx
+
+EMAIL_HOST_PASSWORD
+'lgpphcklrmnnbgba'
+
+
 自动化发布博客工具（自动同步csdn）
 
 名言表
@@ -7,7 +17,7 @@
 
 登陆后下拉栏动态划出
 
-
+错误信息不消失
 
 绑定邮件、修改昵称、修改密码、注册/登录成功通知
 

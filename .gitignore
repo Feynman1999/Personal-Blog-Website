@@ -6,3 +6,13 @@ mysite/*/migrations/
 *.pyc
 
 *.sqlite3
+
+mysite/static/admin/
+
+mysite/static/ckeditor/
+
+articles\.zip
+
+articles/
+
+static_collected/

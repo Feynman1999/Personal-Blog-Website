@@ -7,9 +7,8 @@ from django.conf import settings
 
 from .models import Article, ArticleType
 from read_count.utils import read_count_once
+# from .utils import test_add_article
 # from django.db.models import Count # 用于按类计数
-import time
-
 
 def make_pagination(request, articles_all):
     paginator = Paginator(articles_all, settings.NUM_IN_ONE_PAGE)
