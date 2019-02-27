@@ -1,0 +1,61 @@
+cat /var/log/nginx/error.log
+ls /var/log/nginx/
+home env 别忘了 can't find app   艹
+
+
+
+
+
+sudo /etc/init.d/nginx restart
+uwsgi --ini uwsgi.ini
+
+
+
+
+
+Emperor mode
+uWSGI can run in ‘emperor’ mode. In this mode it keeps an eye on a directory of uWSGI config files, and will spawn instances (‘vassals’) for each one it finds.
+
+Whenever a config file is amended, the emperor will automatically restart the vassal.
+
+# create a directory for the vassals
+sudo mkdir /etc/uwsgi
+sudo mkdir /etc/uwsgi/vassals
+# symlink from the default config directory to your config file
+sudo ln -s /path/to/your/mysite/mysite_uwsgi.ini /etc/uwsgi/vassals/
+# run the emperor
+uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
+You may need to run uWSGI with sudo:
+
+sudo uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
+The options mean:
+
+emperor: where to look for vassals (config files)
+uid: the user id of the process once it’s started
+gid: the group id of the process once it’s started
+Check the site; it should be running.
+
+
+
+
+
+sudo uwsgi --emperor /etc/uwsgi/vassals 
+
+--uid www-data --gid www-data
+
+
+
+
+
+
+
+用阿里云的小伙伴们记得在mysite.ini的最后面加上enable-threads = True.然后重新加载一下配置文件，不然评论发送邮件的线程启动不了。还有就是阿里云把25端口屏蔽了，大家改用465端口，加密方式把TLS改成SSL=True就可以了
+
+
+
+
+
+
+
+
+

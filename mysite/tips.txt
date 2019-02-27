@@ -35,3 +35,13 @@ python manage.py migrate
 创建超管
 创建两类用于调试
 python manage.py createcachetable
+
+
+for item in ans:
+    ...:     time.sleep(0.5)
+    ...:     Id, title, content = get_article_id_and_title_and_content(item)
+    ...:     Article.objects.create(title = title, content = content, author = user, article_type
+    ...: =
+
+    
+
