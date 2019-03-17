@@ -165,6 +165,3 @@ EMAIL_HOST_PASSWORD = 'lgpphcklrmnnbgba'
 EMAIL_SUBJECT_PREFIX = '[RandomWalker\'s Blog]♪(･ω･)ﾉ'
 EMAIL_USE_TLS = True # 与SMTP服务器通信时， 是否启动TLS链接（安全链接） 
 EMAIL_COMMENT_SEND = True 
-
-
-contest_id = 134

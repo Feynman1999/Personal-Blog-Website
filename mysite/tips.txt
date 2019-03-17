@@ -68,18 +68,3 @@ Edit /etc/rc.local and add:
 
 /usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
 
-
-# 重启nginx
-
-sudo /etc/init.d/nginx restart
-
-
-# uwsgi 查看进程
-ps -aux | grep uwsgi
-
-# uwsgi 全部关闭
-ps -aux | grep uwsgi |awk '{print $2}'|xargs kill -9
-
-
-# 注意 manage.py中默认指向的是develop  如果在server上运行manage 注意改为prod
-

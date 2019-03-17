@@ -1,15 +1,44 @@
-cat /var/log/nginx/error.log
-ls /var/log/nginx/
+# 注意 manage.py中默认指向的是develop  如果在server上运行manage 注意改为prod
 home env 别忘了 can't find app   艹
+python manage.py collectstatic
+创建migrations 文件夹
+python manage.py makemigrations
+python manage.py migrate
 
 
 
-
-
+# 开启nginx
+sudo /etc/init.d/nginx start
+# 重启nginx
 sudo /etc/init.d/nginx restart
+# 设置uwsgi
 uwsgi --ini uwsgi.ini
 
 
+# uwsgi 查看进程
+ps -aux | grep uwsgi
+
+# uwsgi 全部关闭
+ps -aux | grep uwsgi |awk '{print $2}'|xargs kill -9
+
+
+sudo uwsgi --emperor /etc/uwsgi/vassals 
+--uid www-data --gid www-data
+
+
+
+
+
+
+
+
+
+
+
+
+# 查看nginx日志
+cat /var/log/nginx/error.log
+ls /var/log/nginx/
 
 
 
@@ -34,17 +63,6 @@ emperor: where to look for vassals (config files)
 uid: the user id of the process once it’s started
 gid: the group id of the process once it’s started
 Check the site; it should be running.
-
-
-
-
-
-sudo uwsgi --emperor /etc/uwsgi/vassals 
-
---uid www-data --gid www-data
-
-
-
 
 
 

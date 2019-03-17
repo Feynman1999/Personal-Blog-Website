@@ -203,5 +203,3 @@ LOGGING = {
         },
     },
 }
-
-contest_id = 134
