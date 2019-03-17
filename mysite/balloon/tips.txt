@@ -1,0 +1,7 @@
+from django.core.cache import cache
+
+cache.set('get_spider_running', 0, 3600*24)
+cache.set('AC_detail_last_id', 0, 3600*24)
+
+
+cache.clear():

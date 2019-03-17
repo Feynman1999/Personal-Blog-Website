@@ -33,6 +33,7 @@ urlpatterns = [
     path('likes/', include('likes.urls')),
     path('ckeditor', include('ckeditor_uploader.urls')),
     # path(r'mdeditor/', include('mdeditor.urls')),
+    path('balloon/', include('balloon.urls')),
 ]
 
 

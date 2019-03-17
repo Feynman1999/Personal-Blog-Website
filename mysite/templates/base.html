@@ -8,10 +8,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block meta_extend %}{% endblock %}
   <title> {% block title %}{% endblock %}</title>
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
   <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}"> <!-- 注意 若使用这种方法 则必须在settings.py中设置static路径 -->
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">  
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% block header_extend %}{% endblock %}
 </head>
 
@@ -38,6 +39,7 @@
           <li class= "nav-item {% block nav_spe_active %}{% endblock %}"><a href="{% url 'spe' %}"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>&nbsp;<b>专栏</b></a></li>
           <li class= "nav-item {% block nav_statis_active %}{% endblock %}"><a href="{% url 'statistics' %}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;<b>统计</b></a></li>
           <li class= "nav-item {% block nav_about_active %}{% endblock %}"><a href="{% url 'about' %}"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;<b>关于</b></a></li>
+          <li class= "nav-item {% block nav_balloon_active %}{% endblock %}"><a href="{% url 'balloon_board' %}"><span><img style="height:16px;" src="{% static 'balloon/balloon.png' %}" alt="balloon"></span>&nbsp;<b>气球</b></a></li>
           <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -150,7 +152,7 @@
   <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
   <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/scroll.js' %}"></script>
-
+  <!-- <script type="text/javascript" src="{% static 'flipclock/flipclock.min.js' %}"></script> -->
   <!-- base scripts -->
   <script type="text/javascript">
       // 使用ajax登陆

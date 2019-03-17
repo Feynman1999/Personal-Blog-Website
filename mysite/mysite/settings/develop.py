@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = '31$1h23l(+-35kyr8-1c@*#0gvm0*8uuy#u%y(ohb@nt31#so='
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'comment',
     'likes',
     'user',
+    'balloon',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,6 @@ EMAIL_HOST_PASSWORD = 'lgpphcklrmnnbgba'
 EMAIL_SUBJECT_PREFIX = '[RandomWalker\'s Blog]♪(･ω･)ﾉ'
 EMAIL_USE_TLS = True # 与SMTP服务器通信时， 是否启动TLS链接（安全链接） 
 EMAIL_COMMENT_SEND = True 
+
+
+contest_id = 134
