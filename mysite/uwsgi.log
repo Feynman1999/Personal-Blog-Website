@@ -1,0 +1,125 @@
+*** Starting uWSGI 2.0.18 (64bit) on [Sun Mar 17 16:28:42 2019] ***
+compiled with version: 5.4.0 20160609 on 22 February 2019 15:03:11
+os: Linux-4.4.0-117-generic #141-Ubuntu SMP Tue Mar 13 11:58:07 UTC 2018
+nodename: iZuf61r9iykr96gpdnw626Z
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/Personal-Blog-Website/mysite
+detected binary path: /usr/local/bin/uwsgi
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/Personal-Blog-Website/mysite
+your processes number limit is 7856
+your memory page size is 4096 bytes
+ *** WARNING: you have enabled harakiri without post buffering. Slow upload could be rejected on post-unbuffered webservers *** 
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/Personal-Blog-Website/mysite/mysite.sock fd 3
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.6.7 (default, Oct 25 2018, 09:16:13)  [GCC 5.4.0 20160609]
+Set PythonHome to /home/django_env/
+Python main interpreter initialized at 0x8a9520
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x8a9520 pid: 1892 (default app)
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1892)
+spawned uWSGI worker 1 (pid: 1894, cores: 1)
+spawned uWSGI worker 2 (pid: 1895, cores: 1)
+spawned uWSGI worker 3 (pid: 1896, cores: 1)
+spawned uWSGI worker 4 (pid: 1897, cores: 1)
+*** Starting uWSGI 2.0.18 (64bit) on [Sun Mar 17 16:28:56 2019] ***
+compiled with version: 5.4.0 20160609 on 22 February 2019 15:03:11
+os: Linux-4.4.0-117-generic #141-Ubuntu SMP Tue Mar 13 11:58:07 UTC 2018
+nodename: iZuf61r9iykr96gpdnw626Z
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/Personal-Blog-Website/mysite
+detected binary path: /usr/local/bin/uwsgi
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/Personal-Blog-Website/mysite
+your processes number limit is 7856
+your memory page size is 4096 bytes
+ *** WARNING: you have enabled harakiri without post buffering. Slow upload could be rejected on post-unbuffered webservers *** 
+detected max file descriptor number: 65535
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/Personal-Blog-Website/mysite/mysite.sock fd 3
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.6.7 (default, Oct 25 2018, 09:16:13)  [GCC 5.4.0 20160609]
+Set PythonHome to /home/django_env/
+Python main interpreter initialized at 0x1b4b520
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 4 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1b4b520 pid: 1900 (default app)
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1900)
+spawned uWSGI worker 1 (pid: 1902, cores: 1)
+spawned uWSGI worker 2 (pid: 1903, cores: 1)
+spawned uWSGI worker 3 (pid: 1904, cores: 1)
+spawned uWSGI worker 4 (pid: 1905, cores: 1)
+[pid: 1904|app: 0|req: 1/1] 173.242.112.214 () {44 vars in 843 bytes} [Sun Mar 17 16:29:00 2019] GET / => generated 9083 bytes in 294 msecs (HTTP/1.1 200) 5 headers in 292 bytes (1 switches on core 0)
+[pid: 1902|app: 0|req: 1/2] 173.242.112.214 () {44 vars in 866 bytes} [Sun Mar 17 16:29:04 2019] GET /blog/ => generated 22570 bytes in 348 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 2/3] 173.242.112.214 () {44 vars in 877 bytes} [Sun Mar 17 16:29:06 2019] GET /balloon/ => generated 19509 bytes in 37 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+[pid: 1902|app: 0|req: 2/4] 173.242.112.214 () {44 vars in 876 bytes} [Sun Mar 17 16:29:11 2019] GET /about/ => generated 8771 bytes in 25 msecs (HTTP/1.1 200) 5 headers in 292 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 3/5] 173.242.112.214 () {44 vars in 878 bytes} [Sun Mar 17 16:29:13 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 3/6] 173.242.112.214 () {48 vars in 931 bytes} [Sun Mar 17 16:29:23 2019] GET /balloon/ => generated 19509 bytes in 35 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+[pid: 1904|app: 0|req: 4/7] 173.242.112.214 () {44 vars in 874 bytes} [Sun Mar 17 16:29:35 2019] GET /blog/ => generated 22570 bytes in 99 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+[pid: 1902|app: 0|req: 4/8] 173.242.112.214 () {44 vars in 861 bytes} [Sun Mar 17 16:30:06 2019] GET / => generated 9083 bytes in 24 msecs (HTTP/1.1 200) 5 headers in 292 bytes (1 switches on core 0)
+[pid: 1904|app: 0|req: 5/9] 173.242.112.214 () {44 vars in 866 bytes} [Sun Mar 17 16:30:17 2019] GET /blog/ => generated 22570 bytes in 72 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 5/10] 173.242.112.214 () {44 vars in 877 bytes} [Sun Mar 17 16:31:04 2019] GET /balloon/ => generated 19509 bytes in 28 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+[pid: 1904|app: 0|req: 6/11] 36.60.198.25 () {44 vars in 876 bytes} [Sun Mar 17 16:31:15 2019] GET /blog/ => generated 22570 bytes in 72 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 6/12] 36.60.198.25 () {44 vars in 879 bytes} [Sun Mar 17 16:31:17 2019] GET /balloon/ => generated 19509 bytes in 30 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 7/13] 36.60.198.25 () {46 vars in 910 bytes} [Sun Mar 17 16:31:32 2019] GET /balloon/ => generated 19509 bytes in 30 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 7/14] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:32:03 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 8/15] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:32:33 2019] GET /balloon/ => generated 19509 bytes in 30 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 8/16] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:33:03 2019] GET /balloon/ => generated 19509 bytes in 31 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 9/17] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:33:34 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 9/18] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:34:05 2019] GET /balloon/ => generated 19509 bytes in 41 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 10/19] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:34:35 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 10/20] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:35:07 2019] GET /balloon/ => generated 19509 bytes in 32 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 11/21] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:35:37 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 11/22] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:36:08 2019] GET /balloon/ => generated 19509 bytes in 31 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 12/23] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:36:39 2019] GET /balloon/ => generated 19509 bytes in 45 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 12/24] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:37:10 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 13/25] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:37:41 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 13/26] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:38:12 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1904|app: 0|req: 14/27] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:38:43 2019] GET /balloon/ => generated 19509 bytes in 29 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 14/28] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:39:15 2019] GET /balloon/ => generated 19509 bytes in 34 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)
+已经有爬虫在运行了
+[pid: 1902|app: 0|req: 15/29] 36.60.198.25 () {46 vars in 913 bytes} [Sun Mar 17 16:39:45 2019] GET /balloon/ => generated 19509 bytes in 32 msecs (HTTP/1.1 200) 5 headers in 293 bytes (1 switches on core 0)

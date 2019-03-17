@@ -14,7 +14,7 @@ def login():
     "__VIEWSTATEGENERATOR": "C2EE9ABB",
     "__EVENTVALIDATION": "/wEdAAQ0Av07VjuDOILkZ2b1jVggNmJORucp1eQiHzMn79KmSwOmdXA3Nr9IYISzlILy1ebN+DvxnwFeFeJ9MIBWR693k5u+TsFuMU8EvT7og4gnu/Z55GQ9R3czfkLcqreeoqY =",
     "TUsername": "jzhou",
-    "TPassword": "",
+    "TPassword": "jzhou07037",
     "Button1": "登 录",
     }
     header={'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64)'}
