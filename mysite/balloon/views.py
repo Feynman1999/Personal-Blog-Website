@@ -124,3 +124,12 @@ def change_status(request):
     data['deal_people'] = ac_obj.deal_people.username
     data['workers'] = [worker.username for worker in list(User.objects.filter(groups__name='2019ahucpc'))]
     return SuccessResponse(data)
+
+
+def set_para(request):
+    lid = int(request.GET.get("lid", 1000000))
+    cid = int(request.GET.get("cid", 136))
+    cache.set('get_spider_running', 0, 3600*24)
+    cache.set('AC_detail_last_id', lid, 3600*24)
+    cache.set('contest_id', cid, 3600*24)
+    return render(request, 'error.html', {'message': '设置成功 爬虫标记置0 lid={},cid={}'.format(lid,cid)})

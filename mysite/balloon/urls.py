@@ -5,5 +5,5 @@ from django.urls import path
 urlpatterns = [
     path('', balloon_board , name='balloon_board'),
     path('change_status', change_status, name="change_status"),
-
+    path('set_para', set_para, name="set_para"),
 ]
