@@ -19,6 +19,7 @@ class Get_Spider(threading.Thread):
         last_id = cache.get('AC_detail_last_id')
         if last_id is None:
             last_id = 0
+        last_id = int(last_id)
         Dict = aoj.spider(last_id, self.contest_id)
         if Dict is None:
             print("没有新的数据！")
@@ -61,7 +62,10 @@ def add_match_timestamp(Dict):
 def balloon_board(request):
     running_flag = cache.get('get_spider_running')
     if running_flag is None or running_flag == 0:
-        get_spider = Get_Spider(134)
+        contest_id = cache.get('contest_id')
+        if contest_id is None:
+            contest_id = 136
+        get_spider = Get_Spider(int(contest_id))
         get_spider.start() # 开启线程
         print("开始调用爬虫...")
     else:
