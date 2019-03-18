@@ -27,8 +27,9 @@ class Get_Spider(threading.Thread):
             print("没有新的数据！")
             return 
 
-        data_dir = os.path.join(settings.BASE_DIR, 'static\\balloon\\data\\')
+        data_dir = os.path.join(settings.BASE_DIR, 'static/balloon/data')
         file_name = os.path.join(data_dir, 'map_table.json')
+        print(file_name)
         with open(file_name, 'r') as load_f:
             map_table = json.load(load_f)
         n = len(Dict["id"])
