@@ -1,11 +1,13 @@
 import threading
 import time
-
+import sys
+import os,json
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from .models import AC_detail
 from django.http import JsonResponse
 from django.core.cache import cache  # cache.clear()
+from django.conf import settings
 
 from . import aoj
 
@@ -24,14 +26,21 @@ class Get_Spider(threading.Thread):
         if Dict is None:
             print("没有新的数据！")
             return 
+
+        data_dir = os.path.join(settings.BASE_DIR, 'static\\balloon\\data\\')
+        file_name = os.path.join(data_dir, 'map_table.json')
+        with open(file_name, 'r') as load_f:
+            map_table = json.load(load_f)
         n = len(Dict["id"])
         for i in range(n):
             ac_obj_num = AC_detail.objects.filter(name = Dict["name"][i], problem_id=ord(Dict["problem"][i])-ord('A')+1).count()
             if ac_obj_num == 0:
-                AC_detail.objects.create(name = Dict["name"][i], problem_id=ord(Dict["problem"][i])-ord('A')+1, aoj_id = Dict["id"][i])
+                AC_detail.objects.create(name = Dict["name"][i], problem_id=ord(Dict["problem"][i])-ord('A')+1, 
+                                        aoj_id = Dict["id"][i], student_id=map_table.get(Dict["name"][i], 0)) #.decode('utf-8')
             
             if i == n-1:
                 cache.set('AC_detail_last_id', Dict["id"][i], 3600*24)
+        print("成功写入数据库")
         return 
 
     def run(self):
@@ -39,6 +48,7 @@ class Get_Spider(threading.Thread):
         try:
             self.add_data()
         except:
+            print("Unexpected error:", sys.exc_info()[0], sys.exc_info()[1])
             print("运行爬虫时出错!")
         cache.set('get_spider_running', 0, 3600*24)
 

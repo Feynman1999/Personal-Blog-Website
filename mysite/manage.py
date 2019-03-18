@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 import os
 import sys
+import platform
 
 if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings.production')
+    if platform.architecture()[1] == 'WindowsPE': 
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings.develop')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings.production')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
