@@ -34,11 +34,10 @@ class Get_Spider(threading.Thread):
             map_table = json.load(load_f)
         n = len(Dict["id"])
         for i in range(n):
-            ac_obj_num = AC_detail.objects.filter(name = Dict["name"][i], problem_id=ord(Dict["problem"][i])-ord('A')+1).count()
+            ac_obj_num = AC_detail.objects.filter(name = Dict["name"][i].strip(), problem_id=ord(Dict["problem"][i])-ord('A')+1).count()
             if ac_obj_num == 0:
-                AC_detail.objects.create(name = Dict["name"][i], problem_id=ord(Dict["problem"][i])-ord('A')+1, 
-                                        aoj_id = Dict["id"][i], student_id=map_table.get(Dict["name"][i], 0)) #.decode('utf-8')
-            
+                AC_detail.objects.create(name = Dict["name"][i].strip(), problem_id=ord(Dict["problem"][i])-ord('A')+1, 
+                                        aoj_id = Dict["id"][i], student_id=map_table.get(Dict["name"][i].strip(), 0)) #.decode('utf-8')
             if i == n-1:
                 cache.set('AC_detail_last_id', Dict["id"][i], 3600*24)
         print("成功写入数据库")
