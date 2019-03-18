@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block header_extend %}
-    {% block meta_extend %}<meta http-equiv="refresh" content="30">{% endblock %}
+    {% block meta_extend %}<meta http-equiv="refresh" content="50">{% endblock %}
     <link rel="stylesheet" href="{% static 'balloon/css/balloon.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}"> -->
     <script type="text/javascript" src="{% static 'balloon/js/balloon.js' %}"></script>
@@ -23,6 +23,10 @@
         <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
             <h1 align="center">balloon hand out system(2019 ahu cpc)</h1>
             <br>
+            <h4 align="center">
+                Cached Last_status_id:&nbsp; <i>{{last_id}}</i> &nbsp;&nbsp;&nbsp; contest_id:&nbsp; <i><a href="http://ccpc.ahu.edu.cn/ContestProblemSet.aspx?cid={{contest_id}}">{{contest_id}}</a></i>
+                &nbsp;&nbsp;&nbsp;<button type="button" onclick="set_para(this)" class="btn btn-danger btn-sm">reset</button>
+            </h4><br>
             <h4 align="center">
                 <span><img style="height:20px;" src="{% static 'balloon/balloon.png' %}" alt="balloon"></span>  
                 {% if now_timestamp < cpc_start_timestamp %}
@@ -138,11 +142,43 @@
 <button type="button" id="btnScroll-3" class="btn btn-success btn-lg" onclick=tostatus(3)> 
         完成
 </button>
+
+
+<!-- para Modal -->
+<div class="modal fade" id="para_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <form id="para_modal_form" action="{% url 'set_para' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><b>设置参数</b></h4>
+                </div>
+
+                <div class="modal-body">
+                    <label for="last_id" class="control-label">last_id</label>
+                    <input type="number" name="last_id" class="form-control" id="last_id" placeholder="{{last_id}}">
+                    <label for="contest_id" class="control-label">contest_id</label>
+                    <input type="number" name="contest_id" class="form-control" id="contest_id" placeholder="136">
+                    <span id="para_medal_tip" class="text-danger"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submit_para_button">设置</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {%  endblock  %}
 
 
 
 {% block script %}
+
 <script type="text/javascript">
     {% if timestamp_for_js %}
         // Set the date we're counting down to
@@ -184,7 +220,7 @@
         return str;
     }
 
-    // 使用ajax动态点赞
+    // 使用ajax动态
     function change_status(obj, object_id, source_status, desti_status){
         var deal_people = $("#ac_detail_"+object_id +" option:selected").val()
         $.ajax({
@@ -290,4 +326,27 @@
         }
     }
 </script>
+
+<script type="text/javascript">
+    function set_para(obj){
+        $('#para_modal').modal('show');
+    }
+    $("#submit_para_button").click(function(){
+        var lid = $('#last_id').val();
+        var cid = $('#contest_id').val();
+        if (lid == '') {
+            alert("last_id不能为空！");
+            return false;
+        }
+        if (cid == '') {                
+            alert("contest_id不能为空！");                
+            return false;
+        }
+        if (parseInt(lid) < 0 ){
+            alert("last_id要为正数！");
+            return false;
+        }
+    });
+</script>
+
 {% endblock  %}

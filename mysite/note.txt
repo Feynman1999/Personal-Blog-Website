@@ -1,3 +1,5 @@
+set PYTHONIOENCODING=utf-8
+
 SECRET_KEY
 5k(eqf*6!ngq)i0rwk1lu*9-yfsm-(w6u$z6=e39*7cx2m^drj
 

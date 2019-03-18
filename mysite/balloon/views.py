@@ -1,7 +1,7 @@
 import threading
 import time
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from .models import AC_detail
 from django.http import JsonResponse
@@ -69,7 +69,7 @@ def balloon_board(request):
         get_spider.start() # 开启线程
         print("开始调用爬虫...")
     else:
-        print("已经有爬虫在运行了")
+        print("已经有爬虫在运行了...")
     Dict = {}
     ac_0 = AC_detail.objects.filter(status=0)
     for item in ac_0: # 状态置为1
@@ -78,7 +78,7 @@ def balloon_board(request):
     ac_1 = AC_detail.objects.filter(status=1).order_by('id') # 已显示但还未处理
     ac_2 = AC_detail.objects.filter(status=2).order_by('-id') # 正在处理
     ac_3 = list(AC_detail.objects.filter(status=3).order_by('-id')) # 已经处理
-    ac_3_up = 100
+    ac_3_up = 20
     if len(ac_3) > ac_3_up:
         ac_3 = ac_3[0:ac_3_up]
     Dict['ac_1'] = ac_1
@@ -86,6 +86,12 @@ def balloon_board(request):
     Dict['ac_3'] = ac_3
     Dict['ac_3_up'] = ac_3_up
     Dict['workers'] = User.objects.filter(groups__name='2019ahucpc')
+    Dict['last_id'] = cache.get('AC_detail_last_id')
+    if Dict['last_id'] is None:
+        Dict['last_id'] = 0
+    Dict['contest_id'] = cache.get('contest_id')
+    if Dict['contest_id'] is None:
+        Dict['contest_id'] = 136
     add_match_timestamp(Dict)
     return render(request,'balloon/balloon.html', Dict)
 
@@ -127,9 +133,11 @@ def change_status(request):
 
 
 def set_para(request):
-    lid = int(request.GET.get("lid", 1000000))
-    cid = int(request.GET.get("cid", 136))
+    referer = request.META.get('HTTP_REFERER', reverse('balloon_board'))
+    lid = int(request.POST.get("last_id", 0))
+    lid = max(lid, 0)
+    cid = int(request.POST.get("contest_id", 136))
     cache.set('get_spider_running', 0, 3600*24)
     cache.set('AC_detail_last_id', lid, 3600*24)
     cache.set('contest_id', cid, 3600*24)
-    return render(request, 'error.html', {'message': '设置成功 爬虫标记置0 lid={},cid={}'.format(lid,cid)})
+    return redirect(referer)
