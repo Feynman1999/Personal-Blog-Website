@@ -1,9 +1,10 @@
 # 注意 manage.py中默认指向的是develop  如果在server上运行manage 注意改为prod
 home env 别忘了 can't find app   艹
-python manage.py collectstatic
-创建migrations 文件夹
 python manage.py makemigrations
 python manage.py migrate
+python manage.py collectstatic
+创建migrations 文件夹
+
 
 
 
