@@ -72,6 +72,22 @@ Check the site; it should be running.
 
 
 
+database(mysite_db):
+
+登陆
+mysql -u root -p           bbez***
+-u 表示选择登陆的用户名， -p 表示登陆的用户密码，上面命令输入之后会提示输入密码，此时输入密码就可以登录到mysql。
+
+查看有哪些数据库、表
+show databases;
+
+导入时间
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql;
+Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
+sudo service mysql restart
 
 
 
