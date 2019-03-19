@@ -18,4 +18,4 @@ articles/
 static_collected/
 \.vscode/
 
-mysite/balloon/aoj.py
+mysite/balloon/aoj\.py
