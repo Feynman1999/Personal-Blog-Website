@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+{% load deal_from_url %}   <!-- 处理跨多页返回from_url时的累加问题 -->
 
 {% block title %}
     balloon
@@ -25,7 +26,12 @@
             <br>
             <h4 align="center">
                 Cached Last_status_id:&nbsp; <i>{{last_id}}</i> &nbsp;&nbsp;&nbsp; contest_id:&nbsp; <i><a href="http://ccpc.ahu.edu.cn/ContestProblemSet.aspx?cid={{contest_id}}">{{contest_id}}</a></i>
-                &nbsp;&nbsp;&nbsp;<button type="button" onclick="set_para(this)" class="btn btn-danger btn-sm">reset</button>
+                &nbsp;&nbsp;&nbsp;
+                {% if user.is_authenticated %}
+                    <button type="button" onclick="set_para(this)" class="btn btn-danger btn-sm">reset</button>
+                {% else %}
+                    <button type="button" onclick="window.location.href='{% url 'login' %}?from={{ request.get_full_path | deal_from_url_fun1}}'" class="btn btn-primary btn-sm">login to reset</button>
+                {% endif %}
             </h4><br>
             <h4 align="center">
                 <span><img style="height:20px;" src="{% static 'balloon/balloon.png' %}" alt="balloon"></span>  
@@ -344,6 +350,10 @@
         }
         if (parseInt(lid) < 0 ){
             alert("last_id要为正数！");
+            return false;
+        }
+        if (parseInt(cid) > 1000 ){
+            alert("contest_id 过大！");
             return false;
         }
     });
