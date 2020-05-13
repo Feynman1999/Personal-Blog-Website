@@ -34,7 +34,7 @@ python manage.py makemigrations
 python manage.py migrate
 
 创建超管
-创建两类用于调试
+创建两类别用于调试
 python manage.py createcachetable
 
 

@@ -19,3 +19,7 @@ static_collected/
 \.vscode/
 
 mysite/balloon/aoj\.py
+
+*.xml
+
+*.iml
